@@ -8,14 +8,31 @@
    socket.on('disconnect', function () {
        console.log('Disconnected from Server');
    });
-    
-  socket.on('newMessage', function (newMessage) {
-   console.log('New Message', newMessage);
+
+    const text = document.getElementById('input');
+     let list = document.getElementById('messages');
+
+     
+  socket.on('newMessage', function (message) {
+   console.log('New Message', message);
+   let li = document.createElement('li');
+   li.appendChild(document.createTextNode(`${message.from}: ${message.text}`));
+   list.appendChild(li);
+
   });
 
+
+  const input = document.getElementById('message-form');
+  input.addEventListener('submit', inputFunc);
+
+
+  function inputFunc(e) {
+  e.preventDefault();
+
   socket.emit('createMessage', {
-     from: 'frank',
-     text: 'this is some text'
-  }, function (data) {
-     console.log(`Sent, (${data})`);
-  });
+     from: 'User',
+     text: text.value
+  }, function () {
+
+  })
+  };
