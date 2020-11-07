@@ -3,7 +3,7 @@ const webSocket = require('socket.io');
 const path = require('path');
 const http = require('http');
 
-const {generateMessage} = require('./utils/message')
+const {generateMessage, generateLocationMessage} = require('./utils/message')
 const publicPath = path.join(__dirname, '../Public');
 let app = express();
 let server = http.createServer(app);
@@ -21,12 +21,12 @@ io.on('connection', (socket) => {
    socket.on('createMessage', (message, acknowledge) => {
     io.emit('newMessage', generateMessage(message.from, message.text));
     acknowledge('Message from Server');
-    // socket.broadcast.emit('newMessage', {
-    //     from: newMessage.from,
-    //     text: newMessage.text,
-    //     createdAt: new Date().getTime()
-    // })
    });
+
+   socket.on('sendLocMsg', (position) => {
+       console.log('Position', position);
+       io.emit('newLocationMessage', generateLocationMessage('Admin', position.latitude, position.longitude));
+   })
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
