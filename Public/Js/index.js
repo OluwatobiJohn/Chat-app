@@ -20,15 +20,13 @@
 
    socket.on('newLocationMessage', function (message) {
       console.log('Location Message', message);
-      let li = document.createElement('li');
-      let a = document.createElement('a');
-      a.innerHTML = "My Current Location";
-       a.setAttribute('href', message.url);
-      a.href = message.url
-      a.setAttribute('target', '_blank');
-      li.appendChild(document.createTextNode(`${message.from}: ${a}`));
-      list.appendChild(li);
+      let li = jQuery('<li></li>');
+      let a = jQuery('<a target="_blank">My Current Location</a>');
       
+      li.text(`${message.from}: `);
+      a.attr('href', message.url);
+      li.append(a);
+      jQuery('#messages').append(li);
    });
 
   socket.on('newMessage', function (message) {
